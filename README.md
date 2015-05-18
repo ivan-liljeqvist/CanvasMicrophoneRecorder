@@ -3,9 +3,13 @@ A JS library for recording canvas and microphone and uploading the video to vid.
 
 To start recording just give it a canvas or div ID.
 
+```javascript
 startRecordingCanvas("myCanvas");
+```
 
 To stop recording and upload to vid.me:
+
+```javascript
 
 stopRecordingCanvas(function(){
 	
@@ -18,5 +22,5 @@ stopRecordingCanvas(function(){
 		uploadToVidMe(onUploadToVidMeComplete,"vid.me title","vid.me description");
 		
 	
-		
 	});
+```
