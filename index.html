@@ -1,0 +1,149 @@
+<!-- JS libraries for recording used by canvasRecordAndUpload library-->
+<script src="js/recorder/record.js"></script>
+<script src="js/recorder/screenshot.js"></script>
+
+<!-- include the library that contains the functions we need -->
+<script src="js/canvasRecordAndUpload.js"></script>
+		
+		
+		
+<!-- 
+	 IMPORTANT! Make sure the width and height of the canvas are divisible by 2.
+	 Otherwise the encoding WILL FAIL!
+	 
+	 If you're using width:100% or height:100% on the canvas check so the final dimensions are divisible by 2
+	 and resize by one pixel if they are not.
+	 Alternatively set the dimenstions of the canvas in pixels instead of percent.
+-->
+
+<p>Use Chrome for this to work properly.</p>
+	 		
+<canvas id="myCanvas" width="500" height="300"></canvas>
+
+
+
+
+<script>
+            
+startRecordingCanvas("myCanvas");
+
+//function that will 
+function onUploadToVidMeComplete(videoURL,embedCode) {
+
+	//videoURL - url to vid.me site
+	//embed code - code for embedding. Just append somewhere.
+    
+    alert(embedCode);
+    alert(videoURL);    
+}
+
+function stopButtonClicked(){
+
+	document.write("Stopped recording! Now uploading to vid.me. You'll get a popup with the vid.me link in a minute...");
+	document.write("<br><br>Fetching vid.me link. Show a spin animation or something.");
+	
+	stopRecordingCanvas(function(){
+	
+		/*
+			on complete. 
+			start uploading or set some flag that the recording has stopped.
+			just make sure that you don't upload before this callback function
+		*/
+		
+		uploadToVidMe(onUploadToVidMeComplete,"vid.me title","vid.me description");
+		
+	
+		
+	});
+
+	
+}
+
+</script>
+
+<button onclick="stopButtonClicked()">Stop Recording</button>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- THE CODE BELOW IS ONLY TO MAKE THE CANVAS ANIMATION. NOT PART OF THE RECORDING OR UPLOADING -->
+
+    <script>
+      window.requestAnimFrame = (function(callback) {
+        return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+        function(callback) {
+          window.setTimeout(callback, 1000 / 60);
+        };
+      })();
+
+      function drawRectangle(myRectangle, context) {
+        context.beginPath();
+        context.rect(myRectangle.x, myRectangle.y, myRectangle.width, myRectangle.height);
+        context.fillStyle = '#8ED6FF';
+        context.fill();
+        context.lineWidth = myRectangle.borderWidth;
+        context.strokeStyle = 'black';
+        context.stroke();
+      }
+      function animate(myRectangle, canvas, context, startTime) {
+        // update
+        var time = (new Date()).getTime() - startTime;
+
+        var linearSpeed = 100;
+        // pixels / second
+        var newX = linearSpeed * time / 1000;
+
+        if(newX < canvas.width - myRectangle.width - myRectangle.borderWidth / 2) {
+          myRectangle.x = newX;
+        }
+
+        // clear
+        context.clearRect(0, 0, canvas.width, canvas.height);
+
+        drawRectangle(myRectangle, context);
+
+        // request new frame
+        requestAnimFrame(function() {
+          animate(myRectangle, canvas, context, startTime);
+        });
+      }
+      var canvas = document.getElementById('myCanvas');
+      var context = canvas.getContext('2d');
+
+      var myRectangle = {
+        x: 0,
+        y: 75,
+        width: 100,
+        height: 50,
+        borderWidth: 5
+      };
+
+      drawRectangle(myRectangle, context);
+
+      // wait one second before starting animation
+      setTimeout(function() {
+        var startTime = (new Date()).getTime();
+        animate(myRectangle, canvas, context, startTime);
+      }, 1000);
+    </script>
