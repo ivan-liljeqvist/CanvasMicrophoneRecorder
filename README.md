@@ -36,3 +36,6 @@ function onUploadToVidMeComplete(videoURL,embedCode) {
     alert(videoURL);    
 }
 ```
+
+# Important
+The canvas or div you are recording has to have dimensions that are divisible by two. Otherwise the encoding won't work.
