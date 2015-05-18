@@ -24,3 +24,15 @@ stopRecordingCanvas(function(){
 	
 	});
 ```
+
+You pass in a callback function that will look something like this:
+
+```javascript
+function onUploadToVidMeComplete(videoURL,embedCode) {
+	//videoURL - url to vid.me site
+	//embed code - code for embedding. Just append somewhere.
+    
+    alert(embedCode);
+    alert(videoURL);    
+}
+```
